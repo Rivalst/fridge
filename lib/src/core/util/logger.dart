@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:logging/logging.dart' as logging;
 
@@ -121,7 +122,16 @@ abstract base class Logger {
 
   /// Handy method to log zoneError
   void logZoneError(Object error, StackTrace stackTrace) {
-    this.error('Zone error: $error', error: error, stackTrace: stackTrace);
+    FirebaseCrashlytics.instance.recordError(
+      error,
+      stackTrace,
+    );
+
+    this.error(
+      'Zone error: $error',
+      error: error,
+      stackTrace: stackTrace,
+    );
   }
 
   /// Handy method to log [FlutterError]
@@ -129,6 +139,8 @@ abstract base class Logger {
     if (details.silent) {
       return;
     }
+
+    FirebaseCrashlytics.instance.recordFlutterFatalError(details);
 
     final description = details.exceptionAsString();
 
@@ -141,6 +153,12 @@ abstract base class Logger {
 
   /// Handy method to log [PlatformDispatcher] error
   bool logPlatformDispatcherError(Object error, StackTrace stackTrace) {
+    FirebaseCrashlytics.instance.recordError(
+      error,
+      stackTrace,
+      fatal: true,
+    );
+
     this.error(
       'Platform Dispatcher Error: $error',
       error: error,
