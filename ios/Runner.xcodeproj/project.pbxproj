@@ -202,7 +202,6 @@
 				3B06AD1E1E4923F5004D2608 /* Thin Binary */,
 				0A235D9C2DE11B750350CAFD /* [firebase_crashlytics] Crashlytics Upload Symbols */,
 				A2E1D12797C584B608B85BD6 /* [CP] Embed Pods Frameworks */,
-				CEEF92D12BB983AD00219F4C /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -338,18 +337,22 @@
 		};
 		9740EEB61CF901F6004384FC /* Run Script */ = {
 			isa = PBXShellScriptBuildPhase;
-			alwaysOutOfDate = 1;
-			buildActionMask = 2147483647;
+			buildActionMask = 8;
 			files = (
 			);
 			inputPaths = (
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}",
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Resources/DWARF/${PRODUCT_NAME}",
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Info.plist",
+				"$(TARGET_BUILD_DIR)/$(UNLOCALIZED_RESOURCES_FOLDER_PATH)/GoogleService-Info.plist",
+				"$(TARGET_BUILD_DIR)/$(EXECUTABLE_PATH)",
 			);
 			name = "Run Script";
 			outputPaths = (
 			);
-			runOnlyForDeploymentPostprocessing = 0;
+			runOnlyForDeploymentPostprocessing = 1;
 			shellPath = /bin/sh;
-			shellScript = "/bin/sh \"$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh\" build";
+			shellScript = "/bin/sh \"$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh\" build\n\n$PODS_ROOT/FirebaseCrashlytics/upload-symbols --build-phase --validate -ai 1:727731161524:ios:56d2d9f013d8a8dba78ae1 -- $DWARF_DSYM_FOLDER_PATH/App.framework.dSYM\n\n$PODS_ROOT/FirebaseCrashlytics/upload-symbols --build-phase -ai 1:727731161524:ios:56d2d9f013d8a8dba78ae1 -- $DWARF_DSYM_FOLDER_PATH/App.framework.dSYM \n\n";
 		};
 		A2E1D12797C584B608B85BD6 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -389,28 +392,6 @@
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
-		};
-		CEEF92D12BB983AD00219F4C /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}",
-				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Resources/DWARF/${PRODUCT_NAME}",
-				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Info.plist",
-				"$(TARGET_BUILD_DIR)/$(UNLOCALIZED_RESOURCES_FOLDER_PATH)/GoogleService-Info.plist",
-				"$(SRCROOT)/newInputFile",
-			);
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n$PODS_ROOT/FirebaseCrashlytics/upload-symbols --build-phase --validate -ai 1:727731161524:ios:56d2d9f013d8a8dba78ae1 -- $DWARF_DSYM_FOLDER_PATH/App.framework.dSYM\n\n$PODS_ROOT/FirebaseCrashlytics/upload-symbols --build-phase -ai 1:727731161524:ios:56d2d9f013d8a8dba78ae1 -- $DWARF_DSYM_FOLDER_PATH/App.framework.dSYM \n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
